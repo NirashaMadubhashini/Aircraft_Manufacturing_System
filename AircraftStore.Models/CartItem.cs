@@ -8,11 +8,11 @@ namespace Aircraft.Models;
 public class CartItem
 {
     public int Id { get; set; }
-    [Required, Range(1, int.MaxValue)] public int ShoeSizeId { get; set; }
+    [Required, Range(1, int.MaxValue)] public int AirplaneSizeId { get; set; }
 
     [ValidateNever]
-    [ForeignKey("ShoeSizeId")]
-    public ShoeSize ShoeSize { get; set; }
+    [ForeignKey("AirplaneSizeId")]
+    public AirplaneSize AirplaneSize { get; set; }
 
     [Range(1, 999)] public int Count { get; set; }
     public decimal PriceEach { get; set; }

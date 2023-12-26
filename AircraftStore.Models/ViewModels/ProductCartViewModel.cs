@@ -2,7 +2,7 @@
 
 public class ProductCartViewModel
 {
-    public int ShoeSizeId { get; set; }
+    public int AirplaneSizeId { get; set; }
     public int CartItemId { get; set; }
     public decimal Price { get; set; }
     public string? ProductName { get; set; }

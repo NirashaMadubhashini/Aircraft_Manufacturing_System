@@ -4,7 +4,7 @@ namespace Aircraft.Models.ViewModels;
 
 public class ProductListViewModel
 {
-    public List<ShoeColor>? ShoeColors { get; set; }
+    public List<AirplaneColor>? AirplaneColors { get; set; }
     public IEnumerable<ProductCardViewModel>? ProductCards { get; set; }
     public List<Brand>? Brands { get; set; }
     public List<Size>? Sizes { get; set; }

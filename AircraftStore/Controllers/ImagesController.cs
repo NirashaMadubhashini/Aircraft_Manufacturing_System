@@ -55,7 +55,7 @@ namespace Aircraft.Controllers
                 return NotFound();
             }
 
-            var imageList = await _unitOfWork.Images.GetAllAsync(e => e.ShoeColorId == image.ShoeColorId,
+            var imageList = await _unitOfWork.Images.GetAllAsync(e => e.AirplaneColorId == image.AirplaneColorId,
                 orderBy: s => s.SortOrder);
             if (sortOrderNew <= 0 || sortOrderNew > imageList.Count)
             {
@@ -75,7 +75,7 @@ namespace Aircraft.Controllers
             _unitOfWork.Images.UpdateRange(imageList);
             await _unitOfWork.SaveChangesAsync();
 
-            return await _unitOfWork.Images.GetAllAsync(e => e.ShoeColorId == image.ShoeColorId,
+            return await _unitOfWork.Images.GetAllAsync(e => e.AirplaneColorId == image.AirplaneColorId,
                 orderBy: s => s.SortOrder);
         }
         // [HttpPut("{id}")]
@@ -110,16 +110,16 @@ namespace Aircraft.Controllers
         // POST: api/Images
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<Image>>> PostImage(int shoeColorId, IFormFileCollection files)
+        public async Task<ActionResult<IEnumerable<Image>>> PostImage(int airplaneColorId, IFormFileCollection files)
         {
-            ShoeColor? shoeColor =
-                await _unitOfWork.ShoeColors.FirstOrDefaultAsync(e => e.Id == shoeColorId);
-            if (shoeColor == null)
+            AirplaneColor? airplaneColor =
+                await _unitOfWork.AirplaneColors.FirstOrDefaultAsync(e => e.Id == airplaneColorId);
+            if (airplaneColor == null)
             {
                 return NotFound();
             }
 
-            List<Image> images = await _unitOfWork.Images.GetAllAsync(e => e.ShoeColorId == shoeColorId,
+            List<Image> images = await _unitOfWork.Images.GetAllAsync(e => e.AirplaneColorId == airplaneColorId,
                 orderBy: s => s.SortOrder);
 
             int count = images.Count();
@@ -130,7 +130,7 @@ namespace Aircraft.Controllers
             {
                 string fileName = Guid.NewGuid().ToString();
                 string fileExtension = Path.GetExtension(formFile.FileName);
-                string filePath = Path.Combine(root, @"images\shoes", fileName + fileExtension);
+                string filePath = Path.Combine(root, @"images\airplanes", fileName + fileExtension);
                 await using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await formFile.CopyToAsync(fileStream);
@@ -138,14 +138,14 @@ namespace Aircraft.Controllers
 
                 var image = new Image
                 {
-                    ShoeColorId = shoeColorId,
-                    Path = @"\images\shoes\" + fileName + fileExtension,
+                    AirplaneColorId = airplaneColorId,
+                    Path = @"\images\airplanes\" + fileName + fileExtension,
                     SortOrder = ++count
                 };
                 await _unitOfWork.Images.AddAsync(image);
             }
 
-            images = await _unitOfWork.Images.GetAllAsync(e => e.ShoeColorId == shoeColorId);
+            images = await _unitOfWork.Images.GetAllAsync(e => e.AirplaneColorId == airplaneColorId);
 
             for (var i = 0; i < images.Count; i++)
             {
@@ -157,7 +157,7 @@ namespace Aircraft.Controllers
 
             await _unitOfWork.SaveChangesAsync();
 
-            return await _unitOfWork.Images.GetAllAsync(e => e.ShoeColorId == shoeColorId,
+            return await _unitOfWork.Images.GetAllAsync(e => e.AirplaneColorId == airplaneColorId,
                 orderBy: e => e.SortOrder);
 
             // return CreatedAtAction("GetImage", new { id = image.Id }, image);
@@ -174,7 +174,7 @@ namespace Aircraft.Controllers
                 return NotFound();
             }
 
-            int shoeColorId = image.ShoeColorId;
+            int airplaneColorId = image.AirplaneColorId;
 
             var root = _webHostEnvironment.WebRootPath;
             string imageUrl = image.Path;
@@ -187,7 +187,7 @@ namespace Aircraft.Controllers
             _unitOfWork.Images.Remove(image);
             await _unitOfWork.SaveChangesAsync();
 
-            var imageList = await _unitOfWork.Images.GetAllAsync(e => e.ShoeColorId == shoeColorId,
+            var imageList = await _unitOfWork.Images.GetAllAsync(e => e.AirplaneColorId == airplaneColorId,
                 orderBy: e => e.SortOrder);
             for (var i = 0; i < imageList.Count; i++)
             {

@@ -11,7 +11,7 @@
 <section class="detail container mt-lg-5 mt-4">
     <div class="detail-slider">
         <div class="carousel carousel-main" data-flickity='{ "pageDots": false, "fullscreen": true }'>
-            @foreach (var img in Model?.ShoeImages ?? Enumerable.Empty<Image>())
+            @foreach (var img in Model?.AirplaneImages ?? Enumerable.Empty<Image>())
             {
                 <div class="carousel-cell">
                     <img src="@img.Path" alt="">
@@ -25,7 +25,7 @@
                 "prevNextButtons": false, 
                 "pageDots": false 
             }'>
-            @foreach (var img in Model?.ShoeImages ?? Enumerable.Empty<Image>())
+            @foreach (var img in Model?.AirplaneImages ?? Enumerable.Empty<Image>())
             {
                 <div class="carousel-cell">
                     <img src="@img.Path" alt="">
@@ -34,7 +34,7 @@
         </div>
     </div>
     <div class="detail-info">
-        <h2><strong>@Model.Shoe.Name</strong></h2>
+        <h2><strong>@Model.Airplane.Name</strong></h2>
         <div class="detail-info-name">
             <ul>
                 <li><i class="fa-solid fa-star"></i></li>
@@ -46,25 +46,25 @@
             </ul>
             <div class="d-flex justify-content-between">
                 <p>Brand: <a class="link-dark text-decoration-none" asp-controller="Products" asp-action="Index"
-                        asp-route-brand="@Model.Shoe.Brand.Name">
-                        <strong>@Model.Shoe.Brand.Name</strong>
+                              asp-route-brand="@Model.Airplane.Brand.Name">
+                        <strong>@Model.Airplane.Brand.Name</strong>
                     </a></p>
-                <p>Code: <strong>@Model.ShoeColor.ProductCode</strong></p>
+                <p>Code: <strong>@Model.AirplaneColor.ProductCode</strong></p>
             </div>
         </div>
         <div class="detail-info-price">
             <h4>Price:</h4>
-            <h2><strong>$@Model.ShoeColor.SalePrice</strong></h2>
+            <h2><strong>$@Model.AirplaneColor.SalePrice</strong></h2>
         </div>
         <div class="detail-info-size mt-3">
             <h4>Size:</h4>
             <div asp-validation-summary="All"></div>
             <div class="d-flex align-items-baseline flex-wrap mt-3">
-                @foreach (var size in Model?.ShoeSizes ?? Enumerable.Empty<ShoeSize>())
+                @foreach (var size in Model?.AirplaneSizes ?? Enumerable.Empty<AirplaneSize>())
                 {
                     @if (size.Quantity > 0)
                     {
-                        <input form="add-to-cart" type="radio" id="@($"size-{size.Size.Value}")" class="radio-input" name="ShoeSizeId" value="@size.Id"/>
+                        <input form="add-to-cart" type="radio" id="@($"size-{size.Size.Value}")" class="radio-input" name="AirplaneSizeId" value="@size.Id" />
                         <label for="@($"size-{size.Size.Value}")" class="radio-label">@size.Size.Value</label>
                     }
                 }
@@ -75,12 +75,12 @@
             <h4>Color:</h4>
             <div class="d-flex justify-content-start align-items-center flex-wrap gap-3 mt-3">
 
-                @for (var i = 0; i < Model.RelatedShoeColors.Count; i++)
+                @for (var i = 0; i < Model.RelatedAirplaneColors.Count; i++)
                 {
-                    var productColor = Model.RelatedShoeColors[i];
+                    var productColor = Model.RelatedAirplaneColors[i];
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="productColor" id="@($"productColor-{i}")"
-                        @(productColor.Id == Model.ShoeColor.Id ? "Checked": "")>
+                        @(productColor.Id == Model.AirplaneColor.Id ? "Checked" : "")>
                         <label class="form-check-label" for="@($"productColor-{i}")">
                             <a asp-controller="Products" asp-action="Detail" asp-route-url="@productColor.Url">
                                 <img src='@productColor.Images?.First().Path' alt="">
@@ -110,8 +110,8 @@
         </div>
         @* <form id="add-to-cart" asp-page="/Cart" asp-page-handler="Post" method="post"> *@
         <form id="add-to-cart" method="post">
-            <input type="hidden" asp-for="ShoeColor!.Url" name="productUrl">
-            @* <input type="hidden" name="productId" value="@Model.ShoeColor.Id"> *@
+            <input type="hidden" asp-for="AirplaneColor!.Url" name="productUrl">
+            @* <input type="hidden" name="productId" value="@Model.AirplaneColor.Id"> *@
             <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()">
             <div class="detail-info-add mt-5">
                 @if (isUser)
@@ -148,9 +148,9 @@
                         <div class="accordion-body">
                             <p>
                             <div class="mb-3">
-                                    @Html.Raw(@Model.Shoe.Features)
+                                    @Html.Raw(@Model.Airplane.Features)
                             </div>
-                                @Html.Raw(Model.Shoe.Description)
+                                @Html.Raw(Model.Airplane.Description)
                             </p>
                         </div>
                     </div>
@@ -321,7 +321,7 @@
         </h3>
         <div class="product mt-4" data-aos="zoom-in">
 
-            @foreach (var product in Model?.RelatedProduct ?? Enumerable.Empty<ShoeColor>())
+            @foreach (var product in Model?.RelatedProduct ?? Enumerable.Empty<AirplaneColor>())
             {
                 <div class="product-card">
                     <a asp-controller="Products" asp-action="Detail" asp-route-url="@product.Url">
@@ -330,9 +330,9 @@
                         </div>
                     </a>
                     <div class="product-card-top">
-                        <span>@product.Shoe?.Brand?.Name</span>
+                        <span>@product.Airplane?.Brand?.Name</span>
                         <a asp-controller="Products" asp-action="Detail" asp-route-url="@product.Url">
-                            <h5>@product.Shoe?.Name</h5>
+                            <h5>@product.Airplane?.Name</h5>
                         </a>
                     </div>
                     <div class="product-card-bottom">

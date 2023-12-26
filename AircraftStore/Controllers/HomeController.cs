@@ -26,53 +26,53 @@ public class HomeController : Controller
         //     return RedirectToAction("Index", "Admin");
         // }
         
-        Brand? nike = await _unitOfWork.Brands.FirstOrDefaultAsync(e => e.Name == "Nike");
-        Brand? newBalance = await _unitOfWork.Brands.FirstOrDefaultAsync(e => e.Name == "New Balance");
-        Brand? asics = await _unitOfWork.Brands.FirstOrDefaultAsync(e => e.Name == "Asics");
-        Brand? saucony = await _unitOfWork.Brands.FirstOrDefaultAsync(e => e.Name == "Saucony");
+        Brand? A380800 = await _unitOfWork.Brands.FirstOrDefaultAsync(e => e.Name == "A380800");
+        Brand? A350900XWB = await _unitOfWork.Brands.FirstOrDefaultAsync(e => e.Name == "A350900XWB");
+        Brand? LimitedEdition = await _unitOfWork.Brands.FirstOrDefaultAsync(e => e.Name == "LimitedEdition");
+        Brand? Boeing777 = await _unitOfWork.Brands.FirstOrDefaultAsync(e => e.Name == "Boeing777");
         
         HomeViewModel homeViewModel = new HomeViewModel()
         {
-            FeatureProducts = await _unitOfWork.ShoeColors
+            FeatureProducts = await _unitOfWork.AirplaneColors
                 .GetAllAsync(include: o => o
                         .Include(e => e.Images)
-                        .Include(e => e.Shoe)
+                        .Include(e => e.Airplane)
                         .ThenInclude(e => e!.Brand)!,
                     orderBy: e => e.Priority,
                     take: 4
                 ),
-            NikeProducts = await _unitOfWork.ShoeColors
-                .GetAllAsync(e => nike != null && e.Shoe!.BrandId == nike.Id,
+            A380800Products = await _unitOfWork.AirplaneColors
+                .GetAllAsync(e => A380800 != null && e.Airplane!.BrandId == A380800.Id,
                     include: o => o
                     .Include(e => e.Images)
-                    .Include(e => e.Shoe)
+                    .Include(e => e.Airplane)
                     .ThenInclude(e => e!.Brand)!,
                     orderBy: e => e.Priority,
                     take: 4
                 ),
-            NewBalanceProducts = await _unitOfWork.ShoeColors
-                .GetAllAsync(e => newBalance != null && e.Shoe!.BrandId == newBalance.Id,
+            A350900XWBProducts = await _unitOfWork.AirplaneColors
+                .GetAllAsync(e => A350900XWB != null && e.Airplane!.BrandId == A350900XWB.Id,
                     include: o => o
                         .Include(e => e.Images)
-                        .Include(e => e.Shoe)
+                        .Include(e => e.Airplane)
                         .ThenInclude(e => e!.Brand)!,
                     orderBy: e => e.Priority,
                     take: 4
                 ),
-            AsicsProducts = await _unitOfWork.ShoeColors
-                .GetAllAsync(e => asics != null && e.Shoe!.BrandId == asics.Id,
+            LimitedEditionProducts = await _unitOfWork.AirplaneColors
+                .GetAllAsync(e => LimitedEdition != null && e.Airplane!.BrandId == LimitedEdition.Id,
                     include: o => o
                         .Include(e => e.Images)
-                        .Include(e => e.Shoe)
+                        .Include(e => e.Airplane)
                         .ThenInclude(e => e!.Brand)!,
                     orderBy: e => e.Priority,
                     take: 4
                 ),
-            SauconyProducts = await _unitOfWork.ShoeColors
-                .GetAllAsync(e => asics != null && e.Shoe!.BrandId == asics.Id,
+            Boeing777Products = await _unitOfWork.AirplaneColors
+                .GetAllAsync(e => Boeing777 != null && e.Airplane!.BrandId == Boeing777.Id,
                     include: o => o
                         .Include(e => e.Images)
-                        .Include(e => e.Shoe)
+                        .Include(e => e.Airplane)
                         .ThenInclude(e => e!.Brand)!,
                     orderBy: e => e.Priority,
                     take: 4

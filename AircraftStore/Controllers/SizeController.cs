@@ -102,15 +102,15 @@ namespace Aircraft.Controllers
                 return NotFound();
             }
 
-            var shoeSizes = await _unitOfWork.ShoeSizes.GetAllAsync(e => e.SizeId == size.Id);
-            if (shoeSizes.Count == 0)
+            var airplaneSizes = await _unitOfWork.AirplaneSizes.GetAllAsync(e => e.SizeId == size.Id);
+            if (airplaneSizes.Count == 0)
             {
                 _unitOfWork.Sizes.Remove(size);
                 await _unitOfWork.SaveChangesAsync();
             }
             else
             {
-                TempData[SD.Error] = "Some Shoe is belong to this Size. Can not delete it!";
+                TempData[SD.Error] = "Some Airplane is belong to this Size. Can not delete it!";
             }
 
             return RedirectToAction(nameof(Index));

@@ -17,21 +17,21 @@ public class SessionCart : Cart
 
     [JsonIgnore] public ISession? Session { get; set; }
 
-    public override void AddItem(int shoeSizeId, int quantity)
+    public override void AddItem(int airplaneSizeId, int quantity)
     {
-        base.AddItem(shoeSizeId, quantity);
+        base.AddItem(airplaneSizeId, quantity);
         Session?.SetJson("Cart", this);
     }
 
-    public override void SubtractItem(int shoeSizeId, int quantity)
+    public override void SubtractItem(int airplaneSizeId, int quantity)
     {
-        base.SubtractItem(shoeSizeId, quantity);
+        base.SubtractItem(airplaneSizeId, quantity);
         Session?.SetJson("Cart", this);
     }
 
-    public override void RemoveLine(int shoeSizeId)
+    public override void RemoveLine(int airplaneSizeId)
     {
-        base.RemoveLine(shoeSizeId);
+        base.RemoveLine(airplaneSizeId);
         Session?.SetJson("Cart", this);
     }
 

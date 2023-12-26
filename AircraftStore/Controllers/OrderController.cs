@@ -95,11 +95,11 @@ public class OrderController : Controller
             Order = orderFromDb,
             OrderDetails = await _unitOfWork.OrderDetails.GetAllAsync(e => e.OrderId == id,
                 include: o => o
-                    .Include(e => e.ShoeSize)
-                    .ThenInclude(e => e.ShoeColor)
-                    .ThenInclude(e => e.Shoe)
-                    .Include(e => e.ShoeSize)
-                    .ThenInclude(e => e.ShoeColor)
+                    .Include(e => e.AirplaneSize)
+                    .ThenInclude(e => e.AirplaneColor)
+                    .ThenInclude(e => e.Airplane)
+                    .Include(e => e.AirplaneSize)
+                    .ThenInclude(e => e.AirplaneColor)
                     .ThenInclude(e => e.Color)!
             )
         };
@@ -123,7 +123,7 @@ public class OrderController : Controller
         orderViewModel.Order = orderFromDb;
 
         orderViewModel.OrderDetails = await _unitOfWork.OrderDetails.GetAllAsync(e => e.OrderId == orderFromDb.Id,
-            include: o => o.Include(e => e.ShoeSize));
+            include: o => o.Include(e => e.AirplaneSize));
 
         //--------
         // stripe settings
@@ -143,14 +143,14 @@ public class OrderController : Controller
 
         foreach (var orderDetail in orderFromDb.OrderDetails)
         {
-            ShoeColor shoeColor = (await _unitOfWork.ShoeColors.FirstOrDefaultAsync(
-                e => e.ShoeSizes!.Any(ss => ss.Id == orderDetail.ShoeSizeId),
-                include: o => o.Include(e => e.Shoe)
+            AirplaneColor airplaneColor = (await _unitOfWork.AirplaneColors.FirstOrDefaultAsync(
+                e => e.AirplaneSizes!.Any(ss => ss.Id == orderDetail.AirplaneSizeId),
+                include: o => o.Include(e => e.Airplane)
                     .Include(e => e.Images)!
                     .Include(e => e.Color)!
             ))!;
 
-            var s = shoeColor?.Images?.Select(e => Url.Content(e.Path)).ToList() ?? new List<string>();
+            var s = airplaneColor?.Images?.Select(e => Url.Content(e.Path)).ToList() ?? new List<string>();
 
             var sessionLineItem = new SessionLineItemOptions
             {
@@ -160,8 +160,8 @@ public class OrderController : Controller
                     Currency = "usd",
                     ProductData = new SessionLineItemPriceDataProductDataOptions
                     {
-                        Name = $"{shoeColor.Shoe.Name} {shoeColor.Color?.Name}",
-                        Images = shoeColor?.Images?.Select(e => $"{domain}{e.Path}").ToList() ?? new List<string>(),
+                        Name = $"{airplaneColor.Airplane.Name} {airplaneColor.Color?.Name}",
+                        Images = airplaneColor?.Images?.Select(e => $"{domain}{e.Path}").ToList() ?? new List<string>(),
                     },
                 },
                 Quantity = orderDetail.Count,
@@ -322,15 +322,15 @@ public class OrderController : Controller
 
         foreach (var orderDetail in orderDetails)
         {
-            ShoeSize? shoeSize =
-                await _unitOfWork.ShoeSizes.FirstOrDefaultAsync(e => e.Id == orderDetail.ShoeSizeId);
-            if (shoeSize == null)
+            AirplaneSize? airplaneSize =
+                await _unitOfWork.AirplaneSizes.FirstOrDefaultAsync(e => e.Id == orderDetail.AirplaneSizeId);
+            if (airplaneSize == null)
             {
-                throw new Exception("ShoeSize does not exist!");
+                throw new Exception("AirplaneSize does not exist!");
             }
 
-            shoeSize.Quantity += orderDetail.Count;
-            _unitOfWork.ShoeSizes.Update(shoeSize);
+            airplaneSize.Quantity += orderDetail.Count;
+            _unitOfWork.AirplaneSizes.Update(airplaneSize);
         }
 
         if (orderFromDb.PaymentStatus == SD.PaymentStatusApproved)

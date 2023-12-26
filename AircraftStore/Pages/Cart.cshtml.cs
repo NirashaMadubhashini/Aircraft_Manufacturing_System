@@ -42,28 +42,28 @@ public class CartModel : PageModel
 
         foreach (var cartItem in cartItems)
         {
-            ShoeSize? shoeSize = await _unitOfWork.ShoeSizes
-                .FirstOrDefaultAsync(e => e.Id == cartItem.ShoeSizeId,
+            AirplaneSize? airplaneSize = await _unitOfWork.AirplaneSizes
+                .FirstOrDefaultAsync(e => e.Id == cartItem.AirplaneSizeId,
                     include: o => o.Include(e => e.Size)
-                        .Include(e => e.ShoeColor)
+                        .Include(e => e.AirplaneColor)
                         .ThenInclude(e => e.Images)
-                        .Include(e => e.ShoeColor)
-                        .ThenInclude(e => e.Shoe)
+                        .Include(e => e.AirplaneColor)
+                        .ThenInclude(e => e.Airplane)
                         .ThenInclude(e => e.Brand));
 
-            if (shoeSize != null)
+            if (airplaneSize != null)
             {
                 CartViewModel.ProductCartsList.Add(
                     new ProductCartViewModel()
                     {
-                        ShoeSizeId = shoeSize.Id,
+                        AirplaneSizeId = airplaneSize.Id,
                         ProductName =
-                            $"{shoeSize.ShoeColor.Shoe.Name}  (size: {shoeSize.Size.Unit} {shoeSize.Size.Value})",
-                        BrandName = shoeSize.ShoeColor.Shoe.Brand.Name,
-                        Price = shoeSize.ShoeColor.SalePrice,
+                            $"{airplaneSize.AirplaneColor.Airplane.Name}  (size: {airplaneSize.Size.Unit} {airplaneSize.Size.Value})",
+                        BrandName = airplaneSize.AirplaneColor.Airplane.Brand.Name,
+                        Price = airplaneSize.AirplaneColor.SalePrice,
                         Quantity = cartItem.Count,
-                        ImgPath = shoeSize.ShoeColor.Images?.First().Path,
-                        ProductUrl = shoeSize.ShoeColor.Url
+                        ImgPath = airplaneSize.AirplaneColor.Images?.First().Path,
+                        ProductUrl = airplaneSize.AirplaneColor.Url
                     }
                 );
             }
@@ -80,28 +80,28 @@ public class CartModel : PageModel
     //     
     //     foreach (var line in Cart.CartItemsList)
     //     {
-    //         ShoeSize? shoeSize = await _unitOfWork.ShoeSizes
-    //             .FirstOrDefaultAsync(e => e.Id == line.ShoeSizeId,
+    //         AirplaneSize? airplaneSize = await _unitOfWork.AirplaneSizes
+    //             .FirstOrDefaultAsync(e => e.Id == line.AirplaneSizeId,
     //                 include: o => o.Include(e => e.Size)
-    //                     .Include(e => e.ShoeColor)
+    //                     .Include(e => e.AirplaneColor)
     //                     .ThenInclude(e => e.Images)
-    //                     .Include(e => e.ShoeColor)
-    //                     .ThenInclude(e => e.Shoe)
+    //                     .Include(e => e.AirplaneColor)
+    //                     .ThenInclude(e => e.Airplane)
     //                     .ThenInclude(e => e.Brand));
     //
-    //         if (shoeSize != null)
+    //         if (airplaneSize != null)
     //         {
     //             CartViewModel.ProductCartsList.Add(
     //                 new ProductCartViewModel()
     //                 {
-    //                     ShoeSizeId = shoeSize.Id,
+    //                     AirplaneSizeId = airplaneSize.Id,
     //                     ProductName =
-    //                         $"{shoeSize.ShoeColor.Shoe.Name}  (size: {shoeSize.Size.Unit} {shoeSize.Size.Value})",
-    //                     BrandName = shoeSize.ShoeColor.Shoe.Brand.Name,
-    //                     Price = shoeSize.ShoeColor.SalePrice,
+    //                         $"{airplaneSize.AirplaneColor.Airplane.Name}  (size: {airplaneSize.Size.Unit} {airplaneSize.Size.Value})",
+    //                     BrandName = airplaneSize.AirplaneColor.Airplane.Brand.Name,
+    //                     Price = airplaneSize.AirplaneColor.SalePrice,
     //                     Quantity = line.Count,
-    //                     ImgPath = shoeSize.ShoeColor.Images?.First().Path,
-    //                     ProductUrl = shoeSize.ShoeColor.Url
+    //                     ImgPath = airplaneSize.AirplaneColor.Images?.First().Path,
+    //                     ProductUrl = airplaneSize.AirplaneColor.Url
     //                 }
     //             );
     //         }
@@ -118,22 +118,22 @@ public class CartModel : PageModel
         
             cartItem.ApplicationUserId = applicationUserId;
 
-            ShoeSize? shoeSize = await _unitOfWork.ShoeSizes
-                .FirstOrDefaultAsync(e => e.Id == cartItem.ShoeSizeId);
+            AirplaneSize? airplaneSize = await _unitOfWork.AirplanehoeSizes
+                .FirstOrDefaultAsync(e => e.Id == cartItem.AirplaneSizeId);
 
-            if (shoeSize != null)
+            if (airplaneSize != null)
             {
                 CartItem? cartItemFromDb = (await _unitOfWork.CartItems.FirstOrDefaultAsync(e =>
-                    e.ApplicationUserId == applicationUserId && e.ShoeSizeId == cartItem.ShoeSizeId));
+                    e.ApplicationUserId == applicationUserId && e.AirplaneSizeId == cartItem.AirplaneSizeId));
 
                 if (cartItemFromDb != null)
                 {
                     cartItem.Id = cartItemFromDb.Id;
                 
                     cartItem.Count += cartItemFromDb.Count;
-                    if (cartItem.Count > shoeSize.Quantity)
+                    if (cartItem.Count > airplaneSize.Quantity)
                     {
-                        cartItem.Count = shoeSize.Quantity;
+                        cartItem.Count = airplaneSize.Quantity;
                     }
 
                     _unitOfWork.CartItems.Update(cartItem);
@@ -154,20 +154,20 @@ public class CartModel : PageModel
 
         return Redirect(returnUrl);
     }
-    // public async Task<IActionResult> OnPost(int ShoeSizeId, string returnUrl, int Count = 1)
+    // public async Task<IActionResult> OnPost(int AirplaneSizeId, string returnUrl, int Count = 1)
     // {
-    //     ShoeSize? shoeSize = await _context.ShoeSize
-    //         .FirstOrDefaultAsync(e => e.Id == ShoeSizeId);
+    //     AirplaneSize? airplaneSize = await _context.AirplaneSize
+    //         .FirstOrDefaultAsync(e => e.Id == AirplaneSizeId);
     //
-    //     if (shoeSize != null)
+    //     if (airplaneSize != null)
     //     {
     //         // Cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
-    //         Cart.AddItem(ShoeSizeId, Count > 0 ? Count : 1);
+    //         Cart.AddItem(AirplaneSizeId, Count > 0 ? Count : 1);
     //         CartItem? line = Cart.CartItemsList
-    //             .FirstOrDefault(p => p.ShoeSizeId == ShoeSizeId);
-    //         if (line.Count > shoeSize.Quantity)
+    //             .FirstOrDefault(p => p.AirplaneSizeId == AirplaneSizeId);
+    //         if (line.Count > airplaneSize.Quantity)
     //         {
-    //             line.Count = shoeSize.Quantity;
+    //             line.Count = airplaneSize.Quantity;
     //         }
     //
     //         HttpContext.Session.SetJson("cart", Cart);

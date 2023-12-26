@@ -110,15 +110,15 @@ namespace Aircraft.Controllers
                 return NotFound();
             }
 
-            var shoes = await _unitOfWork.Shoes.GetAllAsync(e => e.BrandId == brand.Id);
-            if(shoes.Count == 0)
+            var airplanes = await _unitOfWork.Airplanes.GetAllAsync(e => e.BrandId == brand.Id);
+            if(airplanes.Count == 0)
             {
                 _unitOfWork.Brands.Remove(brand);
                 await _unitOfWork.SaveChangesAsync();
             }
             else
             {
-                TempData[SD.Error] = "Some shoe models is belong to this Brand. Can not delete it!";
+                TempData[SD.Error] = "Some airplane models is belong to this Brand. Can not delete it!";
             }
 
             return RedirectToAction(nameof(Index));

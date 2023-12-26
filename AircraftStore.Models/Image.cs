@@ -10,6 +10,6 @@ public class Image
     [Required]
     public int SortOrder { get; set; }
 
-    public int ShoeColorId { get; set; }
-    [ValidateNever] public ShoeColor? ShoeColor { get; set; }
+    public int AirplaneColorId { get; set; }
+    [ValidateNever] public AirplaneColor? AirplaneColor { get; set; }
 }

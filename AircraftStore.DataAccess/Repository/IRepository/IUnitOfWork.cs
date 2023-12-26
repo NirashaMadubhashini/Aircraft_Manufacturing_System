@@ -8,10 +8,10 @@ public interface IUnitOfWork
     IColorRepository Colors { get; }
     ISizeRepository Sizes { get; }
     ICategoryRepository Categories { get; }
-    IShoeRepository Shoes { get; }
-    IShoeColorRepository ShoeColors { get; }
+    IAirplaneRepository Airplanes { get; }
+    IAirplaneColorRepository AirplaneColors { get; }
     IImageRepository Images { get; }
-    IShoeSizeRepository ShoeSizes { get; }
+    IAirplaneSizeRepository AirplaneSizes { get; }
     ICartItemRepository CartItems { get; }
     IApplicationUserRepository ApplicationUsers { get; }
     IOrderRepository Orders { get; }

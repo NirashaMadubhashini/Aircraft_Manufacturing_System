@@ -1,0 +1,42 @@
+﻿@model Aircraft.Models.AirplaneSize
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_AdminLayout";
+}
+
+<h1>Edit</h1>
+
+<h4>AirplaneSize</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Quantity" class="form-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirplaneColorId" class="form-label"></label>
+                <select asp-for="AirplaneColorId" class="form-control" asp-items="ViewBag.AirplaneColorid"></select>
+                <span asp-validation-for="AirplaneColorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SizeId" class="form-label"></label>
+                <select asp-for="SizeId" class="form-control" asp-items="ViewBag.SizeId"></select>
+                <span asp-validation-for="SizeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
+

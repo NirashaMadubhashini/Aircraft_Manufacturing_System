@@ -480,23 +480,23 @@ body::-webkit-scrollbar-track {
 
 .team h3::after,
 .featured h3::after,
-.nike h3::after,
+.A380800 h3::after,
 .mlb h3::after,
 .vans h3::after,
 .oxford h3::after {
-  background: linear-gradient(to top right, #1F6895 , #3589D5);
-  content: "";
-  display: block;
-  height: 2.5px;
-  width: 50px;
-  margin-top: 20px;
-  border-radius: 6px;
+    background: linear-gradient(to top right, #1F6895, #3589D5);
+    content: "";
+    display: block;
+    height: 2.5px;
+    width: 50px;
+    margin-top: 20px;
+    border-radius: 6px;
 }
 
-.nike,
+.A380800,
 .vans {
-  background-color: #f5f5f5;
-  padding: 30px 0;
+    background-color: #f5f5f5;
+    padding: 30px 0;
 }
 
 .category {
@@ -2806,71 +2806,71 @@ table.dataTable.cell-border tbody tr td:first-child {
   transform: translateX(-50%);
 }
 
-.shoeImage .sort-options {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  display: flex;
-  gap: 10px;
+.airplaneImage .sort-options {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    gap: 10px;
 }
 
-.shoeImage .sort-options select {
+.airplaneImage .sort-options select {
   border-radius: 4px;
 }
 
-.shoeImage .carousel-main .flickity-viewport {
-  height: 500px !important;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  border-radius: 10px;
+.airplaneImage .carousel-main .flickity-viewport {
+    height: 500px !important;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 10px;
 }
 
-.shoeImage .carousel-main .carousel-cell img {
-  height: 500px;
+.airplaneImage .carousel-main .carousel-cell img {
+    height: 500px;
 }
 
-.shoeImage .carousel-nav .flickity-viewport {
-  height: 140px !important;
-  background-color: #eee;
+.airplaneImage .carousel-nav .flickity-viewport {
+    height: 140px !important;
+    background-color: #eee;
 }
 
-.shoeImage .carousel-nav .carousel-cell {
-  height: 140px !important;
-  width: 140px !important;
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
+.airplaneImage .carousel-nav .carousel-cell {
+    height: 140px !important;
+    width: 140px !important;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 }
 
-.shoeImage .carousel-nav .carousel-cell img {
+.airplaneImage .carousel-nav .carousel-cell img {
   width: 120px;
   height: 120px;
 }
 
-.shoeImage .carousel {
-  background: #FAFAFA;
-  margin-bottom: 40px;
+.airplaneImage .carousel {
+    background: #FAFAFA;
+    margin-bottom: 40px;
 }
 
-.shoeImage .carousel-cell {
-  width: 100%;
-  height: 100%;
-  margin-right: 10px;
-  background: #fff;
-  border-radius: 5px;
+.airplaneImage .carousel-cell {
+    width: 100%;
+    height: 100%;
+    margin-right: 10px;
+    background: #fff;
+    border-radius: 5px;
 }
 
-.shoeImage .carousel-nav .carousel-cell.is-nav-selected {
-  opacity: 1;
-  box-shadow: rgb(232, 205, 204) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+.airplaneImage .carousel-nav .carousel-cell.is-nav-selected {
+    opacity: 1;
+    box-shadow: rgb(232, 205, 204) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
 }
 
-.shoeImage .flickity-prev-next-button.previous {
-  left: -70px;
+.airplaneImage .flickity-prev-next-button.previous {
+    left: -70px;
 }
 
-.shoeImage .flickity-prev-next-button.next {
-  right: -70px;
+.airplaneImage .flickity-prev-next-button.next {
+    right: -70px;
 }
 
 .btn-add-img {

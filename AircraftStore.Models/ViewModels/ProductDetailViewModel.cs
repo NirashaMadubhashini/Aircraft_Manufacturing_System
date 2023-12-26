@@ -2,10 +2,10 @@
 
 public class ProductDetailViewModel
 {
-    public Shoe Shoe { get; set; }
-    public ShoeColor? ShoeColor { get; set; }
-    public List<ShoeColor> RelatedShoeColors { get; set; }
-    public IEnumerable<Image>? ShoeImages { get; set; }
-    public IEnumerable<ShoeSize>? ShoeSizes { get; set; }
-    public IEnumerable<ShoeColor>? RelatedProduct { get; set; }
+    public Airplane Airplane { get; set; }
+    public AirplaneColor? AirplaneColor { get; set; }
+    public List<AirplaneColor> RelatedAirplaneColors { get; set; }
+    public IEnumerable<Image>? AirplaneImages { get; set; }
+    public IEnumerable<AirplaneSize>? AirplaneSizes { get; set; }
+    public IEnumerable<AirplaneColor>? RelatedProduct { get; set; }
 }

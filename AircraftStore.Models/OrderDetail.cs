@@ -15,11 +15,11 @@ public class OrderDetail
     [ForeignKey("OrderId")]
     public ShopOrder ShopOrder { get; set; }
 
-    [Required] public int ShoeSizeId { get; set; }
+    [Required] public int AirplaneSizeId { get; set; }
 
-    [ForeignKey("ShoeSizeId")]
+    [ForeignKey("AirplaneSizeId")]
     [ValidateNever]
-    public ShoeSize ShoeSize { get; set; }
+    public AirplaneSize AirplaneSize { get; set; }
 
     public int Count { get; set; }
     public decimal PriceEach { get; set; }

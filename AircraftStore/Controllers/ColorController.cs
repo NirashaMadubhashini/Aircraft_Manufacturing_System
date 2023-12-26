@@ -110,15 +110,15 @@ namespace Aircraft.Controllers
                 return NotFound();
             }
             
-            var shoeColors = await _unitOfWork.ShoeColors.GetAllAsync(e => e.ColorId == color.Id);
-            if(shoeColors.Count == 0)
+            var airplaneColors = await _unitOfWork.AirplaneColors.GetAllAsync(e => e.ColorId == color.Id);
+            if(airplaneColors.Count == 0)
             {
                 _unitOfWork.Colors.Remove(color);
                 await _unitOfWork.SaveChangesAsync();
             }
             else
             {
-                TempData[SD.Error] = "Some ShoeColorModels is belong to this Color. Can not delete it!";
+                TempData[SD.Error] = "Some AirplaneColorModels is belong to this Color. Can not delete it!";
             }
 
             return RedirectToAction(nameof(Index));

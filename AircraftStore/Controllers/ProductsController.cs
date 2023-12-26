@@ -27,7 +27,7 @@ public class ProductsController : Controller
         decimal? minPrice = 0,
         decimal? maxPrice = 999, string? sort = "latest")
     {
-        ProductListViewModel productListViewModel = await _unitOfWork.ShoeColors.FilterProductAsync(PageSize,
+        ProductListViewModel productListViewModel = await _unitOfWork.AirplaneColors.FilterProductAsync(PageSize,
             productName, page, brand, size, minPrice, maxPrice,
             sort);
         return View(productListViewModel);
@@ -36,48 +36,48 @@ public class ProductsController : Controller
     [HttpGet]
     public async Task<IActionResult> Detail(string url)
     {
-        ShoeColor? shoeColor = await _unitOfWork.ShoeColors
+        AirplaneColor? airplaneColor = await _unitOfWork.AirplaneColors
                 .FirstOrDefaultAsync(e => e.Url == url,
                     include: o => o
                         .Include(e => e.Images)
-                        .Include(e => e.ShoeSizes)!
+                        .Include(e => e.AirplaneSizes)!
                         .ThenInclude(e => e.Size)!
                 )
             ;
-        if (shoeColor == null)
+        if (airplaneColor == null)
         {
             return NotFound();
         }
 
-        Shoe shoe = await _unitOfWork.Shoes
-            .FirstOrDefaultAsync(e => e.ShoeColors!.Any(e => e.Id == shoeColor.Id),
+        Airplane airplane = await _unitOfWork.Airplanes
+            .FirstOrDefaultAsync(e => e.AirplaneColors!.Any(e => e.Id == airplaneColor.Id),
                 include: o => o
                     .Include(e => e.Brand)
-                    .Include(e => e.ShoeColors)!
+                    .Include(e => e.AirplaneColors)!
                     .ThenInclude(e => e.Color)
-                    .Include(e => e.ShoeColors)!
+                    .Include(e => e.AirplaneColors)!
                     .ThenInclude(e => e.Images)!
             );
 
-        List<ShoeColor> relatedShoeColors = shoe.ShoeColors!.OrderBy(e => e.SortOrder).ToList();
+        List<AirplaneColor> relatedAirplaneColors = airplane.AirplaneColors!.OrderBy(e => e.SortOrder).ToList();
 
-        IEnumerable<ShoeColor> relatedShoes = await _unitOfWork.ShoeColors
-            .GetAllAsync(e => e.Shoe.Brand.Id == shoe.Brand.Id && e.Id != shoeColor.Id,
+        IEnumerable<AirplaneColor> relatedAirplanes = await _unitOfWork.AirplaneColors
+            .GetAllAsync(e => e.Airplane.Brand.Id == airplane.Brand.Id && e.Id != airplaneColor.Id,
                 include: o => o
                     .Include(e => e.Images)
-                    .Include(e => e.Shoe.Brand),
+                    .Include(e => e.Airplane.Brand),
                 orderBy: e => e.Priority,
                 take: 4
             );
 
         ProductDetailViewModel productDetailViewModel = new ProductDetailViewModel
         {
-            Shoe = shoe,
-            ShoeColor = shoeColor,
-            ShoeImages = shoeColor.Images,
-            ShoeSizes = shoeColor.ShoeSizes,
-            RelatedProduct = relatedShoes,
-            RelatedShoeColors = relatedShoeColors
+            Airplane = airplane,
+            AirplaneColor = airplaneColor,
+            AirplaneImages = airplaneColor.Images,
+            AirplaneSizes = airplaneColor.AirplaneSizes,
+            RelatedProduct = relatedAirplanes,
+            RelatedAirplaneColors = relatedAirplaneColors
         };
         return View(productDetailViewModel);
     }
@@ -99,31 +99,31 @@ public class ProductsController : Controller
             {
                 cartItem.ApplicationUserId = applicationUserId;
 
-                ShoeSize? shoeSize = await _unitOfWork.ShoeSizes
-                    .FirstOrDefaultAsync(e => e.Id == cartItem.ShoeSizeId,
-                        include: e => e.Include(e => e.ShoeColor));
+                AirplaneSize? airplaneSize = await _unitOfWork.AirplaneSizes
+                    .FirstOrDefaultAsync(e => e.Id == cartItem.AirplaneSizeId,
+                        include: e => e.Include(e => e.AirplaneColor));
 
-                if (shoeSize == null)
+                if (airplaneSize == null)
                 {
                     return NotFound();
                 }
                 
-                if (shoeSize.Quantity == 0)
+                if (airplaneSize.Quantity == 0)
                 {
                     TempData[SD.Error] = "This size is out of stock!";
                     return Redirect(returnUrl);
                 }
 
-                if (shoeSize.Quantity < cartItem.Count)
+                if (airplaneSize.Quantity < cartItem.Count)
                 {
-                    TempData[SD.Error] = $"There're only {shoeSize.Quantity} items of this size left";
+                    TempData[SD.Error] = $"There're only {airplaneSize.Quantity} items of this size left";
                     return Redirect(returnUrl);
                 }
 
-                cartItem.PriceEach = shoeSize.ShoeColor.SalePrice;
+                cartItem.PriceEach = airplaneSize.AirplaneColor.SalePrice;
 
                 CartItem? cartItemFromDb = (await _unitOfWork.CartItems.FirstOrDefaultAsync(e =>
-                    e.ApplicationUserId == applicationUserId && e.ShoeSizeId == cartItem.ShoeSizeId));
+                    e.ApplicationUserId == applicationUserId && e.AirplaneSizeId == cartItem.AirplaneSizeId));
 
                 if (cartItemFromDb == null)
                 {
@@ -135,9 +135,9 @@ public class ProductsController : Controller
 
                     int newCount = cartItem.Count + cartItemFromDb.Count;
                     
-                    if (newCount > shoeSize.Quantity)
+                    if (newCount > airplaneSize.Quantity)
                     {
-                        int diff = shoeSize.Quantity - cartItemFromDb.Count;
+                        int diff = airplaneSize.Quantity - cartItemFromDb.Count;
 
                         TempData[SD.Error] = diff == 0
                             ? "Can't add more items of this size to Cart!"
@@ -170,34 +170,34 @@ public class ProductsController : Controller
 
         if (ModelState.IsValid)
         {
-            ShoeSize? shoeSize = await _unitOfWork.ShoeSizes
-                .FirstOrDefaultAsync(e => e.Id == cartItem.ShoeSizeId,
-                    include: e => e.Include(e => e.ShoeColor));
+            AirplaneSize? airplaneSize = await _unitOfWork.AirplaneSizes
+                .FirstOrDefaultAsync(e => e.Id == cartItem.AirplaneSizeId,
+                    include: e => e.Include(e => e.AirplaneColor));
 
-            if (shoeSize == null)
+            if (airplaneSize == null)
             {
                 return NotFound();
             }
 
-            if (shoeSize.Quantity == 0)
+            if (airplaneSize.Quantity == 0)
             {
                 TempData[SD.Error] = "This size is out of stock!";
                 return Redirect(returnUrl);
             }
 
-            if (shoeSize.Quantity < cartItem.Count)
+            if (airplaneSize.Quantity < cartItem.Count)
             {
-                TempData[SD.Error] = $"There're only {shoeSize.Quantity} items of this size left!";
+                TempData[SD.Error] = $"There're only {airplaneSize.Quantity} items of this size left!";
                 return Redirect(returnUrl);
             }
 
-            cartItem.PriceEach = shoeSize.ShoeColor.SalePrice;
+            cartItem.PriceEach = airplaneSize.AirplaneColor.SalePrice;
 
-            CartItem? cartItemFromSession = Cart.CartItemsList.FirstOrDefault(e => e.ShoeSizeId == cartItem.ShoeSizeId);
+            CartItem? cartItemFromSession = Cart.CartItemsList.FirstOrDefault(e => e.AirplaneSizeId == cartItem.AirplaneSizeId);
 
             if (cartItemFromSession == null)
             {
-                Cart.AddItem(shoeSize.Id, cartItem.Count);
+                Cart.AddItem(airplaneSize.Id, cartItem.Count);
             }
             else
             {
@@ -205,9 +205,9 @@ public class ProductsController : Controller
 
                 int newCount = cartItem.Count + cartItemFromSession.Count;
 
-                if (newCount > shoeSize.Quantity)
+                if (newCount > airplaneSize.Quantity)
                 {
-                    int diff = shoeSize.Quantity - cartItemFromSession.Count;
+                    int diff = airplaneSize.Quantity - cartItemFromSession.Count;
 
                     TempData[SD.Error] = diff == 0
                         ? "Can't add more items of this size to Cart!"
@@ -216,7 +216,7 @@ public class ProductsController : Controller
                     return Redirect(returnUrl);
                 }
 
-                Cart.AddItem(shoeSize.Id, cartItem.Count);
+                Cart.AddItem(airplaneSize.Id, cartItem.Count);
             }
             return RedirectToAction("Index", "Cart", new { returnUrl });
         }

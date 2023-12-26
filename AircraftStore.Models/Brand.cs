@@ -14,5 +14,5 @@ public class Brand
     public DateTime Created { get; set; }
     public DateTime Edited { get; set; }
 
-    [ValidateNever] public ICollection<Shoe>? Shoes { get; set; }
+    [ValidateNever] public ICollection<Airplane>? Airplanes { get; set; }
 }

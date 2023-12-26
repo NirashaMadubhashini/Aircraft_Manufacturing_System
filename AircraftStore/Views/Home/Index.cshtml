@@ -40,9 +40,9 @@
                         </div>
                     </a>
                     <div class="product-card-top">
-                        <span>@product.Shoe.Brand.Name</span>
+                        <span>@product.Airplane.Brand.Name</span>
                         <a asp-controller="Products" asp-action="Detail" asp-route-url="@product.Url">
-                            <h5>@product.Shoe.Name</h5>
+                            <h5>@product.Airplane.Name</h5>
                         </a>
                     </div>
                     <div class="product-card-bottom">
@@ -65,10 +65,10 @@
     </div>
 </section>
 
-<section class="nike mt-5">
+<section class="A380800 mt-5">
     <div class="container">
         <h3 class="mb-4" data-aos="zoom-in-right">
-            <strong>Nike</strong>
+            <strong>A380800</strong>
         </h3>
         @* <div class="category mt-4"> *@
         @*     <button>Air Force 1</button> *@
@@ -76,9 +76,9 @@
         @* </div> *@
         <div class="product mt-4">
 
-            @for (var i = 0; i < Model.NikeProducts.Count; i++)
+            @for (var i = 0; i < Model.A380800Products.Count; i++)
             {
-                var product = Model.NikeProducts[i];
+                var product = Model.A380800Products[i];
                 int dataAosDelay = 200 + i * 100;
                 <div class="product-card" data-aos="fade-up" data-aos-delay="@dataAosDelay">
                     <a asp-controller="Products" asp-action="Detail" asp-route-url="@product.Url">
@@ -87,9 +87,9 @@
                         </div>
                     </a>
                     <div class="product-card-top">
-                        <span>@product.Shoe.Brand.Name</span>
+                        <span>@product.Airplane.Brand.Name</span>
                         <a asp-controller="Products" asp-action="Detail" asp-route-url="@product.Url">
-                            <h5>@product.Shoe.Name</h5>
+                            <h5>@product.Airplane.Name</h5>
                         </a>
                     </div>
                     <div class="product-card-bottom">
@@ -110,8 +110,8 @@
 
         </div>
         <div class="view-more mt-4">
-            <button>View all products for Nike</button>
-            <a asp-controller="Products" asp-action="Index" asp-route-brand="Nike"></a>
+            <button>View all products for A380800</button>
+            <a asp-controller="Products" asp-action="Index" asp-route-brand="A380800"></a>
         </div>
     </div>
 </section>
@@ -119,13 +119,13 @@
 <section class="mlb mt-5">
     <div class="container">
         <h3 class="mb-4" data-aos="zoom-in-right">
-            <strong>New Balance</strong>
+            <strong>A350900XWB</strong>
         </h3>
         <div class="product mt-4" data-aos="zoom-in">
 
-            @for (var i = 0; i < Model.NewBalanceProducts.Count; i++)
+            @for (var i = 0; i < Model.A350900XWBProducts.Count; i++)
             {
-                var product = Model.NewBalanceProducts[i];
+                var product = Model.A350900XWBProducts[i];
                 int dataAosDelay = 200 + i * 100;
                 <div class="product-card" data-aos="fade-up" data-aos-delay="@dataAosDelay">
                     <a asp-controller="Products" asp-action="Detail" asp-route-url="@product.Url">
@@ -134,9 +134,9 @@
                         </div>
                     </a>
                     <div class="product-card-top">
-                        <span>@product.Shoe.Brand.Name</span>
+                        <span>@product.Airplane.Brand.Name</span>
                         <a asp-controller="Products" asp-action="Detail" asp-route-url="@product.Url">
-                            <h5>@product.Shoe.Name</h5>
+                            <h5>@product.Airplane.Name</h5>
                         </a>
                     </div>
                     <div class="product-card-bottom">
@@ -157,8 +157,8 @@
 
         </div>
         <div class="view-more mt-4">
-            <button>View all products for New Balance</button>
-            <a asp-controller="Products" asp-action="Index" asp-route-brand="New Balance"></a>
+            <button>View all products for A350900XWB</button>
+            <a asp-controller="Products" asp-action="Index" asp-route-brand="A350900XWB"></a>
         </div>
     </div>
 </section>
@@ -166,13 +166,13 @@
 <section class="vans mt-5">
     <div class="container">
         <h3 class="mb-4" data-aos="zoom-in-right">
-            <strong>Asics</strong>
+            <strong>LimitedEdition</strong>
         </h3>
         <div class="product mt-4" data-aos="fade-up">
 
-            @for (var i = 0; i < Model.AsicsProducts.Count; i++)
+            @for (var i = 0; i < Model.LimitedEditionProducts.Count; i++)
             {
-                var product = Model.AsicsProducts[i];
+                var product = Model.LimitedEditionProducts[i];
                 int dataAosDelay = 200 + i * 100;
                 <div class="product-card" data-aos="fade-up" data-aos-delay="@dataAosDelay">
                     <a asp-controller="Products" asp-action="Detail" asp-route-url="@product.Url">
@@ -181,10 +181,10 @@
                         </div>
                     </a>
                     <div class="product-card-top">
-                        <span>@product.Shoe.Brand.Name</span>
+                        <span>@product.Airplane.Brand.Name</span>
                         <a asp-controller="Products" asp-action="Detail" asp-route-url="@product.Url" role="button"
-                        data-bs-toggle="tooltip" data-bs-placement="bottom" title="@product.Shoe.Name">
-                            <h5>@product.Shoe.Name</h5>
+                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="@product.Airplane.Name">
+                            <h5>@product.Airplane.Name</h5>
                         </a>
                     </div>
                     <div class="product-card-bottom">
@@ -214,13 +214,13 @@
 <section class="oxford mt-5">
     <div class="container">
         <h3 class="mb-4" data-aos="zoom-in-right">
-            <strong>Saucony</strong>
+            <strong>Boeing777</strong>
         </h3>
         <div class="product mt-4" data-aos="zoom-in">
 
-            @for (var i = 0; i < Model.SauconyProducts.Count; i++)
+            @for (var i = 0; i < Model.Boeing777Products.Count; i++)
             {
-                var product = Model.SauconyProducts[i];
+                var product = Model.Boeing777Products[i];
                 int dataAosDelay = 200 + i * 100;
                 <div class="product-card" data-aos="fade-up" data-aos-delay="@dataAosDelay">
                     <a asp-controller="Products" asp-action="Detail" asp-route-url="@product.Url">
@@ -229,9 +229,9 @@
                         </div>
                     </a>
                     <div class="product-card-top">
-                        <span>@product.Shoe.Brand.Name</span>
+                        <span>@product.Airplane.Brand.Name</span>
                         <a asp-controller="Products" asp-action="Detail" asp-route-url="@product.Url">
-                            <h5>@product.Shoe.Name</h5>
+                            <h5>@product.Airplane.Name</h5>
                         </a>
                     </div>
                     <div class="product-card-bottom">
@@ -252,8 +252,8 @@
 
         </div>
         <div class="view-more mt-4">
-            <button>View all products for Saucony</button>
-            <a asp-controller="Products" asp-action="Index" asp-route-brand="Saucony"></a>
+            <button>View all products for Boeing777</button>
+            <a asp-controller="Products" asp-action="Index" asp-route-brand="Boeing777"></a>
         </div>
     </div>
 </section>

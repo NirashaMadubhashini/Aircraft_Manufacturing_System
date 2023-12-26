@@ -11,5 +11,5 @@ public class Size
 
     public double Value { get; set; }
 
-    [JsonIgnore] [ValidateNever] public IEnumerable<ShoeSize>? ShoeSizes { get; set; }
+    [JsonIgnore] [ValidateNever] public IEnumerable<AirplaneSize>? AirplaneSizes { get; set; }
 }

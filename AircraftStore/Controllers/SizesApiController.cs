@@ -28,17 +28,17 @@ namespace Aircraft.Controllers
         }
 
         [HttpGet("insertSize")]
-        public async Task<ActionResult<IEnumerable<Size>>> GetSizes(int shoeColorId)
+        public async Task<ActionResult<IEnumerable<Size>>> GetSizes(int airplaneColorId)
         {
-            ShoeColor? shoeColor = await _unitOfWork.ShoeColors
-                .FirstOrDefaultAsync(e => e.Id == shoeColorId,
-                    include: o => o.Include(e => e.ShoeSizes)!);
-            if (shoeColor == null)
+            AirplaneColor? airplaneColor = await _unitOfWork.AirplaneColors
+                .FirstOrDefaultAsync(e => e.Id == airplaneColorId,
+                    include: o => o.Include(e => e.AirplaneSizes)!);
+            if (airplaneColor == null)
             {
                 return BadRequest();
             }
 
-            var oldSizeList = shoeColor.ShoeSizes?.Select(e => e.SizeId);
+            var oldSizeList = airplaneColor.AirplaneSizes?.Select(e => e.SizeId);
 
             var newSizeList = await _unitOfWork.Sizes.GetAllAsync(orderBy: e => e.Value);
 

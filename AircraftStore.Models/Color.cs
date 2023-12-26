@@ -9,5 +9,5 @@ public class Color
     [Required] public string Name { get; set; }
     [Required] [Range(0, Int32.MaxValue)] public int Priority { get; set; }
 
-    [ValidateNever] public IEnumerable<ShoeColor> ShoeColors { get; set; }
+    [ValidateNever] public IEnumerable<AirplaneColor> AirplaneColors { get; set; }
 }

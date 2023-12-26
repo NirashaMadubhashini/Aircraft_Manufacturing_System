@@ -46,31 +46,31 @@ public class CartController : Controller
 
         foreach (var cartItem in cartItemList)
         {
-            ShoeSize? shoeSize = await _unitOfWork.ShoeSizes.FirstOrDefaultAsync(e => e.Id == cartItem.ShoeSizeId,
+            AirplaneSize? airplaneSize = await _unitOfWork.AirplaneSizes.FirstOrDefaultAsync(e => e.Id == cartItem.AirplaneSizeId,
                 include: o => o.Include(e => e.Size)
-                    .Include(e => e.ShoeColor)
+                    .Include(e => e.AirplaneColor)
                     .ThenInclude(e => e.Images)
-                    .Include(e => e.ShoeColor)
-                    .ThenInclude(e => e.Shoe)
+                    .Include(e => e.AirplaneColor)
+                    .ThenInclude(e => e.Airplane)
                     .ThenInclude(e => e.Brand));
 
-            if (shoeSize != null)
+            if (airplaneSize != null)
             {
-                cartViewModel.ShopOrder.OrderTotal += shoeSize.ShoeColor.SalePrice * cartItem.Count;
+                cartViewModel.ShopOrder.OrderTotal += airplaneSize.AirplaneColor.SalePrice * cartItem.Count;
 
                 cartViewModel.ProductCartsList.Add(
                     new ProductCartViewModel()
                     {
-                        ShoeSizeId = shoeSize.Id,
+                        AirplaneSizeId = airplaneSize.Id,
                         CartItemId = cartItem.Id,
                         ProductName =
-                            $"{shoeSize.ShoeColor.Shoe.Name}",
-                        Size = $"{shoeSize.Size?.Unit} {shoeSize.Size?.Value}",
-                        BrandName = shoeSize.ShoeColor.Shoe?.Brand.Name,
-                        Price = shoeSize.ShoeColor.SalePrice,
+                            $"{airplaneSize.AirplaneColor.Airplane.Name}",
+                        Size = $"{airplaneSize.Size?.Unit} {airplaneSize.Size?.Value}",
+                        BrandName = airplaneSize.AirplaneColor.Airplane?.Brand.Name,
+                        Price = airplaneSize.AirplaneColor.SalePrice,
                         Quantity = cartItem.Count,
-                        ImgPath = shoeSize.ShoeColor.Images?.First().Path,
-                        ProductUrl = shoeSize.ShoeColor.Url!
+                        ImgPath = airplaneSize.AirplaneColor.Images?.First().Path,
+                        ProductUrl = airplaneSize.AirplaneColor.Url!
                     }
                 );
             }
@@ -79,11 +79,11 @@ public class CartController : Controller
         return View(cartViewModel);
     }
 
-    public async Task<IActionResult> Increment(int shoeSizeId, string? returnUrl)
+    public async Task<IActionResult> Increment(int airplaneSizeId, string? returnUrl)
     {
-        ShoeSize? shoeSize = await _unitOfWork.ShoeSizes.FirstOrDefaultAsync(e => e.Id == shoeSizeId);
+        AirplaneSize? airplaneSize = await _unitOfWork.AirplaneSizes.FirstOrDefaultAsync(e => e.Id == airplaneSizeId);
 
-        if (shoeSize == null)
+        if (airplaneSize == null)
         {
             return NotFound();
         }
@@ -97,11 +97,11 @@ public class CartController : Controller
         if (applicationUserId != null)
         {
             cartItem = await _unitOfWork.CartItems.FirstOrDefaultAsync(e =>
-                e.ApplicationUserId == applicationUserId && e.ShoeSizeId == shoeSizeId);
+                e.ApplicationUserId == applicationUserId && e.AirplaneSizeId == airplaneSizeId);
         }
         else
         {
-            cartItem = Cart.CartItemsList.FirstOrDefault(e => e.ShoeSizeId == shoeSizeId);
+            cartItem = Cart.CartItemsList.FirstOrDefault(e => e.AirplaneSizeId == airplaneSizeId);
         }
 
         if (cartItem == null || cartItem.Count < 1)
@@ -110,7 +110,7 @@ public class CartController : Controller
         }
 
 
-        if (cartItem.Count >= shoeSize.Quantity)
+        if (cartItem.Count >= airplaneSize.Quantity)
         {
             TempData[SD.Error] = "Can't add more item of this product!";
             return RedirectToAction("Index", new { returnUrl });
@@ -125,7 +125,7 @@ public class CartController : Controller
         }
         else
         {
-            Cart.AddItem(shoeSizeId, 1);
+            Cart.AddItem(airplaneSizeId, 1);
         }
 
         TempData[SD.Success] = "Increase an item's quantity by 1!";
@@ -133,10 +133,10 @@ public class CartController : Controller
         return RedirectToAction("Index", new { returnUrl });
     }
 
-    public async Task<IActionResult> Decrement(int shoeSizeId, string? returnUrl)
+    public async Task<IActionResult> Decrement(int airplaneSizeId, string? returnUrl)
     {
-        ShoeSize? shoeSize = await _unitOfWork.ShoeSizes.FirstOrDefaultAsync(e => e.Id == shoeSizeId);
-        if (shoeSize == null)
+        AirplaneSize? airplaneSize = await _unitOfWork.AirplaneSizes.FirstOrDefaultAsync(e => e.Id == airplaneSizeId);
+        if (airplaneSize == null)
         {
             return NotFound();
         }
@@ -150,11 +150,11 @@ public class CartController : Controller
         if (applicationUserId != null)
         {
             cartItem = await _unitOfWork.CartItems.FirstOrDefaultAsync(e =>
-                e.ApplicationUserId == applicationUserId && e.ShoeSizeId == shoeSizeId);
+                e.ApplicationUserId == applicationUserId && e.AirplaneSizeId == airplaneSizeId);
         }
         else
         {
-            cartItem = Cart.CartItemsList.FirstOrDefault(e => e.ShoeSizeId == shoeSizeId);
+            cartItem = Cart.CartItemsList.FirstOrDefault(e => e.AirplaneSizeId == airplaneSizeId);
         }
 
         if (cartItem == null || cartItem.Count <= 0)
@@ -176,17 +176,17 @@ public class CartController : Controller
         }
         else
         {
-            Cart.SubtractItem(shoeSizeId, 1);
+            Cart.SubtractItem(airplaneSizeId, 1);
         }
 
         TempData[SD.Success] = "Decreased 1 item's quantity!";
         return RedirectToAction("Index", new { returnUrl });
     }
 
-    public async Task<IActionResult> Remove(int shoeSizeId, string? returnUrl)
+    public async Task<IActionResult> Remove(int airplaneSizeId, string? returnUrl)
     {
-        ShoeSize? shoeSize = await _unitOfWork.ShoeSizes.FirstOrDefaultAsync(e => e.Id == shoeSizeId);
-        if (shoeSize == null)
+        AirplaneSize? airplaneSize = await _unitOfWork.AirplaneSizes.FirstOrDefaultAsync(e => e.Id == airplaneSizeId);
+        if (airplaneSize == null)
         {
             return NotFound();
         }
@@ -200,11 +200,11 @@ public class CartController : Controller
         if (applicationUserId != null)
         {
             cartItem = await _unitOfWork.CartItems.FirstOrDefaultAsync(e =>
-                e.ApplicationUserId == applicationUserId && e.ShoeSizeId == shoeSizeId);
+                e.ApplicationUserId == applicationUserId && e.AirplaneSizeId == airplaneSizeId);
         }
         else
         {
-            cartItem = Cart.CartItemsList.FirstOrDefault(e => e.ShoeSizeId == shoeSizeId);
+            cartItem = Cart.CartItemsList.FirstOrDefault(e => e.AirplaneSizeId == airplaneSizeId);
         }
 
         if (cartItem == null)
@@ -219,7 +219,7 @@ public class CartController : Controller
         }
         else
         {
-            Cart.RemoveLine(shoeSizeId);
+            Cart.RemoveLine(airplaneSizeId);
         }
 
         TempData[SD.Success] = "Removed 1 item from cart!";
@@ -256,36 +256,36 @@ public class CartController : Controller
 
         foreach (var cartItem in cartItemList)
         {
-            ShoeSize? shoeSize = await _unitOfWork.ShoeSizes.FirstOrDefaultAsync(e => e.Id == cartItem.ShoeSizeId,
+            AirplaneSize? airplaneSize = await _unitOfWork.AirplaneSizes.FirstOrDefaultAsync(e => e.Id == cartItem.AirplaneSizeId,
                 include: o => o.Include(e => e.Size)
-                    .Include(e => e.ShoeColor)
+                    .Include(e => e.AirplaneColor)
                     .ThenInclude(e => e.Images)
-                    .Include(e => e.ShoeColor)
-                    .ThenInclude(e => e.Shoe)
+                    .Include(e => e.AirplaneColor)
+                    .ThenInclude(e => e.Airplane)
                     .ThenInclude(e => e.Brand));
 
-            if (shoeSize != null)
+            if (airplaneSize != null)
             {
-                if (shoeSize.Quantity < cartItem.Count || cartItem.Count <= 0 || shoeSize.Quantity <= 0)
+                if (airplaneSize.Quantity < cartItem.Count || cartItem.Count <= 0 || airplaneSize.Quantity <= 0)
                 {
                     return BadRequest();
                 }
 
-                cartViewModel.ShopOrder.OrderTotal += shoeSize.ShoeColor.SalePrice * cartItem.Count;
+                cartViewModel.ShopOrder.OrderTotal += airplaneSize.AirplaneColor.SalePrice * cartItem.Count;
 
                 cartViewModel.ProductCartsList.Add(
                     new ProductCartViewModel()
                     {
-                        ShoeSizeId = shoeSize.Id,
+                        AirplaneSizeId = airplaneSize.Id,
                         CartItemId = cartItem.Id,
                         ProductName =
-                            $"{shoeSize.ShoeColor.Shoe!.Name}",
-                        Size = $"{shoeSize.Size?.Unit} {shoeSize.Size?.Value}",
-                        BrandName = shoeSize.ShoeColor.Shoe!.Brand!.Name,
-                        Price = shoeSize.ShoeColor.SalePrice,
+                            $"{airplaneSize.AirplaneColor.Airplane!.Name}",
+                        Size = $"{airplaneSize.Size?.Unit} {airplaneSize.Size?.Value}",
+                        BrandName = airplaneSize.AirplaneColor.Airplane!.Brand!.Name,
+                        Price = airplaneSize.AirplaneColor.SalePrice,
                         Quantity = cartItem.Count,
-                        ImgPath = shoeSize.ShoeColor.Images?.First().Path,
-                        ProductUrl = shoeSize.ShoeColor.Url!
+                        ImgPath = airplaneSize.AirplaneColor.Images?.First().Path,
+                        ProductUrl = airplaneSize.AirplaneColor.Url!
                     }
                 );
             }
@@ -347,19 +347,19 @@ public class CartController : Controller
 
             foreach (var cartItem in cartItemList)
             {
-                ShoeSize? shoeSize = await _unitOfWork.ShoeSizes.FirstOrDefaultAsync(e => e.Id == cartItem.ShoeSizeId,
-                    include: e => e.Include(e => e.ShoeColor));
+                AirplaneSize? airplaneSize = await _unitOfWork.AirplaneSizes.FirstOrDefaultAsync(e => e.Id == cartItem.AirplaneSizeId,
+                    include: e => e.Include(e => e.AirplaneColor));
 
-                if (shoeSize != null)
+                if (airplaneSize != null)
                 {
-                    if (shoeSize.Quantity < cartItem.Count || cartItem.Count <= 0 || shoeSize.Quantity <= 0)
+                    if (airplaneSize.Quantity < cartItem.Count || cartItem.Count <= 0 || airplaneSize.Quantity <= 0)
                     {
                         return BadRequest();
                     }
 
-                    cartItem.PriceEach = shoeSize.ShoeColor.SalePrice;
+                    cartItem.PriceEach = airplaneSize.AirplaneColor.SalePrice;
 
-                    cartViewModel.ShopOrder.OrderTotal += shoeSize.ShoeColor.SalePrice * cartItem.Count;
+                    cartViewModel.ShopOrder.OrderTotal += airplaneSize.AirplaneColor.SalePrice * cartItem.Count;
                 }
             }
 
@@ -373,19 +373,19 @@ public class CartController : Controller
 
                 foreach (var cartItem in cartItemList)
                 {
-                    ShoeSize? shoeSize =
-                        (await _unitOfWork.ShoeSizes.FirstOrDefaultAsync(e => e.Id == cartItem.ShoeSizeId));
-                    if (shoeSize == null)
+                    AirplaneSize? airplaneSize =
+                        (await _unitOfWork.AirplaneSizes.FirstOrDefaultAsync(e => e.Id == cartItem.AirplaneSizeId));
+                    if (airplaneSize == null)
                     {
-                        throw new Exception("ShoeSize does not exist!");
+                        throw new Exception("AirplaneSize does not exist!");
                     }
 
-                    shoeSize.Quantity -= cartItem.Count;
-                    _unitOfWork.ShoeSizes.Update(shoeSize);
+                    airplaneSize.Quantity -= cartItem.Count;
+                    _unitOfWork.AirplaneSizes.Update(airplaneSize);
 
                     OrderDetail orderDetail = new OrderDetail
                     {
-                        ShoeSizeId = cartItem.ShoeSizeId,
+                        AirplaneSizeId = cartItem.AirplaneSizeId,
                         Count = cartItem.Count,
                         PriceEach = cartItem.PriceEach,
                         OrderId = cartViewModel.ShopOrder.Id
@@ -426,9 +426,9 @@ public class CartController : Controller
 
             foreach (var cartItem in cartItemList)
             {
-                ShoeColor shoeColor = (await _unitOfWork.ShoeColors.FirstOrDefaultAsync(
-                    e => e.ShoeSizes!.Any(ss => ss.Id == cartItem.ShoeSizeId),
-                    include: o => o.Include(e => e.Shoe)
+                AirplaneColor airplaneColor = (await _unitOfWork.AirplaneColors.FirstOrDefaultAsync(
+                    e => e.AirplaneSizes!.Any(ss => ss.Id == cartItem.AirplaneSizeId),
+                    include: o => o.Include(e => e.Airplane)
                         .Include(e => e.Images)
                         .Include(e => e.Color)!
                 ))!;
@@ -441,8 +441,8 @@ public class CartController : Controller
                         Currency = "usd",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
-                            Name = $"{shoeColor.Shoe!.Name} {shoeColor.Color?.Name}",
-                            Images = shoeColor.Images?.Select(e => $"{domain}{e.Path}").ToList() ?? new List<string>(),
+                            Name = $"{airplaneColor.Airplane!.Name} {airplaneColor.Color?.Name}",
+                            Images = airplaneColor.Images?.Select(e => $"{domain}{e.Path}").ToList() ?? new List<string>(),
                         },
                     },
                     Quantity = cartItem.Count,

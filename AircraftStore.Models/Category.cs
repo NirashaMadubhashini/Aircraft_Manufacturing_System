@@ -17,5 +17,5 @@ public class Category
 
     public IEnumerable<Category>? Children { get; set; }
 
-    [ValidateNever] public ICollection<Shoe>? Shoes { get; set; }
+    [ValidateNever] public ICollection<Airplane>? Airplanes { get; set; }
 }
