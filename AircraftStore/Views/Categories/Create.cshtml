@@ -1,46 +1,52 @@
 ﻿@model Aircraft.Models.Category
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Category Create" + " ";
     Layout = "_AdminLayout";
 }
 
-<h1>Create</h1>
+<div class="admin-title mt-4 mb-4">
+    <ion-icon name="settings-outline"></ion-icon>
+    <div class="admin-title-content">
+        <h5>Category Management</h5>
+        <span>This dashboard is created to manage Category</span>
+    </div>
+</div>
+<hr />
 
-<h4>Category</h4>
-<hr/>
-<div class="row">
-    <div class="col-md-4">
+
         <form asp-action="Create">
+    <h3 class="title-option mb-4">Create</h3>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="">
+    <div class="d-flex justify-content-center flex-column align-items-center gap-3">
+        <div class="form-group col-md-6">
                 <label asp-for="Name" class="form-label"></label>
                 <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="">
+        <div class="form-group col-md-6">
                 <label asp-for="DisplayName" class="form-label"></label>
                 <input asp-for="DisplayName" class="form-control"/>
                 <span asp-validation-for="DisplayName" class="text-danger"></span>
             </div>
-            <div>
+        <div class="form-group col-md-6">
                 <label asp-for="Description" class="form-label"></label>
                 <input asp-for="Description" class="form-control"/>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="">
+        <div class="form-group col-md-6">
                 <label asp-for="ParentId" class="form-label"></label>
                 <select asp-for="ParentId" class="form-control" asp-items="ViewBag.ParentId">
                     <option selected=""></option>
                 </select>
             </div>
-            <div class="">
-                <input type="submit" value="Create" class="btn btn-primary"/>
             </div>
-        </form>
+ <div class="d-flex justify-content-center align-items-center gap-3 mt-4">
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn-save" />
+        </div>
+        <div>
+            <a asp-action="Index" class="btn-back">Back to List</a>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</div>
+</form>
