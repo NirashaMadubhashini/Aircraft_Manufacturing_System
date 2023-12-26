@@ -413,6 +413,8 @@ public class CartController : Controller
                 {
                     SetupFutureUsage = "off_session"
                 },
+               /* SuccessUrl = $"{domain}/Cart/OrderConfirmation?id={cartViewModel.ShopOrder.Id}",
+                CancelUrl = $"{domain}/Cart/OrderConfirmation?id={cartViewModel.ShopOrder.Id}",*/
                 SuccessUrl = $"{domain}/Cart/OrderConfirmation?id={cartViewModel.ShopOrder.Id}",
                 CancelUrl = $"{domain}/Cart/OrderConfirmation?id={cartViewModel.ShopOrder.Id}",
                 // CancelUrl = $"{domain}/Cart/Index",

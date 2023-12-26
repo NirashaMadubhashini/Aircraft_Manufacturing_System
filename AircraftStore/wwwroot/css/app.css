@@ -1866,19 +1866,19 @@ body::-webkit-scrollbar-track {
 }
 
 .cart-background {
-  position: relative;
-  width: 100%;
-  border-radius: 20px;
-  padding: 40px;
-  border: none;
-  background-image: url("../../images/banner/cart-banner1.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-  background-attachment: scroll;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-  z-index: 1;
+    position: relative;
+    width: 100%;
+    border-radius: 20px;
+    padding: 40px;
+    border: none;
+    background-image: url("../../images/banner/ship.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-attachment: scroll;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    z-index: 1;
 }
 
 .cart-background-overlay::before {
