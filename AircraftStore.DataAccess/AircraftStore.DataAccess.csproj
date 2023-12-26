@@ -35,7 +35,7 @@
       <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0" />
       <PackageReference Include="Moq" Version="4.18.2" />
-      <PackageReference Include="Stripe.net" Version="43.5.0" />
+      <PackageReference Include="Stripe.net" Version="43.8.0" />
       <PackageReference Include="xunit" Version="2.4.1" />
       <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
         <PrivateAssets>all</PrivateAssets>

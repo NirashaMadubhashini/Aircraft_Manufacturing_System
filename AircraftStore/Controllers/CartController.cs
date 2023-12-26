@@ -334,7 +334,7 @@ public class CartController : Controller
             {
                 cartItemList = Cart.CartItemsList;
             }
-            
+
             if (cartItemList.Count <= 0)
             {
                 TempData[SD.Error] = "You must add somethings to Cart first!";

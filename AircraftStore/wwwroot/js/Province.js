@@ -13,62 +13,57 @@ $("#district").change(function () {
 function SetupCity() {
     const selectCity = $("#city");
     const selectedCity = selectCity.val();
-    
-    // alert(selectedCity)
-    
+
     selectCity.empty()
         .append(`<option selected disabled>Select City...</option>`);
 
     $.ajax({
         type: "get",
-        url: "https://provinces.open-api.vn/api/?depth=2",
+        // Update the URL to the API that provides Sri Lankan cities
+        url: "https://api-for-sri-lankan-cities.com/",
         success: function (data) {
             const cities = data.sort((a, b) => a.name.localeCompare(b.name));
             $.each(cities, function (index, value) {
-                var cityName = value.name.replace(/^Tỉnh\s*|^Thành phố\s*/i, "");
+                var cityName = value.name;
                 if (cityName == selectedCity) {
                     selectCity.append(
-                        `<option data-code="${value.code}" selected>${cityName}</option>`
+                        `<option value="${cityName}" selected>${cityName}</option>`
                     );
                 } else {
                     selectCity.append(
-                        `<option data-code="${value.code}">${cityName}</option>`
+                        `<option value="${cityName}">${cityName}</option>`
                     );
                 }
             });
-            // selectCity.children("[data-code=1]").attr("selected", "selected");
             SetupDistrict();
         },
     });
 }
 
 function SetupDistrict() {
-    let cityCode = $("#city option:selected").attr("data-code");
-
+    let cityName = $("#city").val();
     const selectDistrict = $("#district");
     const selectedDistrict = selectDistrict.val();
 
     selectDistrict.empty()
         .append(`<option selected disabled>Select District...</option>`);
-    
-    if (cityCode != null) {
+
+    if (cityName != null) {
         $.ajax({
             type: "get",
-            url: `https://provinces.open-api.vn/api/p/${cityCode}?depth=2`,
+            // Update the URL to fetch districts based on the selected city
+            url: `https://api-for-sri-lankan-districts.com/${cityName}`,
             success: function (data) {
-                const districts = data.districts.sort((a, b) =>
-                    a.name.localeCompare(b.name)
-                );
-                // console.log({districts});
+                const districts = data.sort((a, b) => a.name.localeCompare(b.name));
                 $.each(districts, function (index, value) {
-                    if(value.name == selectedDistrict) {
+                    if (value.name == selectedDistrict) {
                         selectDistrict.append(
-                            `<option data-code="${value.code}" selected>${value.name}</option>`
+                            `<option value="${value.name}" selected>${value.name}</option>`
                         );
                     }
                     else {
                         selectDistrict.append(
-                            `<option data-code="${value.code}">${value.name}</option>`
+                            `<option value="${value.name}">${value.name}</option>`
                         );
                     }
                 });
@@ -81,32 +76,29 @@ function SetupDistrict() {
 }
 
 function SetupWards() {
-    let districtCode = $("#district option:selected").attr("data-code");
-
+    let districtName = $("#district").val();
     const selectWard = $("#ward");
     const selectedWard = selectWard.val();
-    
+
     selectWard.empty()
         .append(`<option selected disabled>Select Ward...</option>`);
-    
-    if (districtCode != null) {
+
+    if (districtName != null) {
         $.ajax({
             type: "get",
-            url: `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`,
+            // Update the URL to fetch wards based on the selected district
+            url: `https://api-for-sri-lankan-wards.com/${districtName}`,
             success: function (data) {
-                const wards = data.wards.sort((a, b) =>
-                    a.name.localeCompare(b.name)
-                );
-                console.log({wards});
+                const wards = data.sort((a, b) => a.name.localeCompare(b.name));
                 $.each(wards, function (index, value) {
-                    if(value.name == selectedWard) {
+                    if (value.name == selectedWard) {
                         selectWard.append(
-                            `<option data-code="${value.code}" selected>${value.name}</option>`
+                            `<option value="${value.name}" selected>${value.name}</option>`
                         );
                     }
                     else {
                         selectWard.append(
-                            `<option data-code="${value.code}">${value.name}</option>`
+                            `<option value="${value.name}">${value.name}</option>`
                         );
                     }
                 });

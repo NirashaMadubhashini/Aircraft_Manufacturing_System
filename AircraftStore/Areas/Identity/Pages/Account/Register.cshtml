@@ -190,27 +190,25 @@ else
                                 <label asp-for="Input.PostalCode" class="p-4"></label>
                                 <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
                             </div>
-
-                            <div class="py-2 col-md-6">
-                                <div class="form-floating">
-                                    <select id="city" asp-for="Input.City" class="form-select"></select>
-                                    <label for="city" class="form-label">City</label>
-                                </div>
+                            <div class="form-floating py-2 col-md-6">
+                                <input asp-for="Input.City" class="form-control" autocomplete="City"
+                                       aria-required="true" />
+                                <label asp-for="Input.City" class="p-4"></label>
+                                <span asp-validation-for="Input.City" class="text-danger"></span>
+                            </div> 
+                            <div class="form-floating py-2 col-md-6">
+                                <input asp-for="Input.District" class="form-control" autocomplete="District"
+                                       aria-required="true" />
+                                <label asp-for="Input.District" class="p-4"></label>
+                                <span asp-validation-for="Input.District" class="text-danger"></span>
+                            </div> 
+                            <div class="form-floating py-2 col-md-6">
+                                <input asp-for="Input.Ward" class="form-control" autocomplete="Ward"
+                                       aria-required="true" />
+                                <label asp-for="Input.Ward" class="p-4"></label>
+                                <span asp-validation-for="Input.Ward" class="text-danger"></span>
                             </div>
-                            <div class="py-2 col-md-6">
-                                <div class="form-floating">
-                                    <select id="district" asp-for="Input.District"
-                                        class="form-select"></select>
-                                    <label for="district" class="form-label">District</label>
-                                </div>
-                            </div>
-                            <div class="py-2 col-md-6">
-                                <div class="form-floating">
-                                    <select id="ward" asp-for="Input.Ward" class="form-select"></select>
-                                    <label for="ward" class="form-label">Ward</label>
-                                </div>
-                            </div>
-
+     
                             @* Select Role *@
                             @if (User.IsInRole(SD.Role_Admin))
                             {
