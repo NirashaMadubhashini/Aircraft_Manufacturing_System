@@ -19,6 +19,7 @@ else
     string inprocess = "";
     string completed = "";
     string approved = "";
+    string cancelled = "";
     string all = "";
 
     switch (status)
@@ -34,6 +35,9 @@ else
             break;
         case "approved":
             approved = "active";
+            break;
+        case "cancelled":
+            cancelled = "active";
             break;
         default:
             all = "active";
@@ -67,18 +71,20 @@ else
                 asp-action="Index" asp-route-status="approved">
                 Approved
             </a>
+            <a class="text-nowrap list-group-item list-group-item-action @cancelled" asp-controller="Order"
+               asp-action="Index" asp-route-status="cancelled">
+                Cancelled
+            </a>
             <a class="text-nowrap list-group-item list-group-item-action @all" asp-controller="Order" asp-action="Index"
                 asp-route-status="all">
                 All
             </a>
         </div>
     </div>
+    <a asp-action="GenerateAllOrdersReport" class="btn-create">Generate All Orders Report <i class="fa-solid fa-file-pdf"></i></a>
 
     <table id="table_id" class="display cell-border w-100">
         <thead>
-            <div class="option-create">
-                <a asp-action="GenerateAllOrdersReport" class="btn-create">Generate All Orders Report <i class="fa-solid fa-file-pdf"></i></a>
-            </div>
             <tr>
                 <th class="d-none d-lg-table-cell">
                     Id

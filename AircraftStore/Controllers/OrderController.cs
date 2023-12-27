@@ -65,13 +65,16 @@ public class OrderController : Controller
                 orders = orders.Where(e => e.PaymentStatus == SD.PaymentStatusDelayedPayment);
                 break;
             case "inprocess":
-                orders = orders.Where(e => e.OrderStatus == SD.StatusInpProcess);
+                orders = orders.Where(e => e.OrderStatus == SD.StatusInProcess);
                 break;
             case "completed":
                 orders = orders.Where(e => e.OrderStatus == SD.StatusShipped);
                 break;
             case "approved":
                 orders = orders.Where(e => e.OrderStatus == SD.StatusApproved);
+                break;
+            case "cancelled":
+                orders = orders.Where(e => e.OrderStatus == SD.StatusCancelled);
                 break;
             case "all":
                 break;
@@ -265,7 +268,7 @@ public class OrderController : Controller
             return NotFound();
         }
 
-        await _unitOfWork.Orders.UpdateStatusAsync(orderFromDb.Id, SD.StatusInpProcess);
+        await _unitOfWork.Orders.UpdateStatusAsync(orderFromDb.Id, SD.StatusInProcess);
         await _unitOfWork.SaveChangesAsync();
         TempData[SD.Success] = "Order Status Updated Successfully!";
 
