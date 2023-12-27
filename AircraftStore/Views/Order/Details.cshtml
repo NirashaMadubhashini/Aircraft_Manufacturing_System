@@ -343,6 +343,14 @@ else
                                     </button>
                                 }
                             }
+                            @if (isAdmin)
+                            {
+                                <div class="text-center mt-3">
+                                    <a asp-action="GenerateReport" asp-route-id="@Model.Order.Id" class="btn btn-primary">
+                                        Generate Report
+                                    </a>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

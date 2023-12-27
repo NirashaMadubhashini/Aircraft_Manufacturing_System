@@ -8,6 +8,10 @@ using Aircraft.Models.ViewModels;
 using Aircraft.Ultitity;
 using Stripe;
 using Stripe.Checkout;
+using System.Text;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+
 
 namespace Aircraft.Controllers;
 
@@ -360,4 +364,68 @@ public class OrderController : Controller
 
         return RedirectToAction("Details", "Order", new { id = orderFromDb.Id });
     }
+
+    [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Employee}")]
+    public async Task<IActionResult> GenerateReport(int id)
+    {
+        var order = await _unitOfWork.Orders.FirstOrDefaultAsync(e => e.Id == id,
+            include: o => o.Include(e => e.ApplicationUser)
+                          .Include(e => e.OrderDetails)
+                              .ThenInclude(d => d.AirplaneSize)
+                              .ThenInclude(s => s.AirplaneColor)
+                              .ThenInclude(c => c.Airplane)
+                              .Include(e => e.OrderDetails)
+                              .ThenInclude(d => d.AirplaneSize)
+                              .ThenInclude(s => s.AirplaneColor)
+                              .ThenInclude(c => c.Color));
+
+        if (order == null)
+        {
+            return NotFound();
+        }
+
+        using (MemoryStream memoryStream = new MemoryStream())
+        {
+            Document document = new Document(PageSize.A4, 10, 10, 10, 10);
+            PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
+            document.Open();
+
+            PdfPTable table = new PdfPTable(5); // 5 columns
+            PdfPCell cell = new PdfPCell(new Phrase("Order Report"))
+            {
+                Colspan = 5,
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                Padding = 10,
+                BackgroundColor = new BaseColor(31, 104, 149)
+            };
+
+            table.AddCell(cell);
+            table.AddCell("OrderId");
+            table.AddCell("ProductName");
+            table.AddCell("Quantity");
+            table.AddCell("PriceEach");
+            table.AddCell("TotalPrice");
+
+            foreach (var detail in order.OrderDetails)
+            {
+                var airplaneColor = detail.AirplaneSize?.AirplaneColor;
+                var colorName = airplaneColor?.Color?.Name ?? "Unknown Color";
+                string productName = $"{airplaneColor?.Airplane?.Name ?? "Unknown Airplane"} {colorName}";
+
+                table.AddCell(order.Id.ToString());
+                table.AddCell(productName);
+                table.AddCell(detail.Count.ToString());
+                table.AddCell(detail.PriceEach.ToString());
+                table.AddCell((detail.Count * detail.PriceEach).ToString());
+            }
+
+            document.Add(table);
+            document.Close();
+
+            byte[] bytes = memoryStream.ToArray();
+            memoryStream.Close();
+            return File(bytes, "application/pdf", $"Order_{id}_Report.pdf");
+        }
+    }
+
 }

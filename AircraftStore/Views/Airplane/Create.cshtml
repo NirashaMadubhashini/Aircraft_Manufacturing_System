@@ -43,17 +43,19 @@
         <div class="row">
             <div class="mb-3 col-md-6">
                 <label asp-for="Description" class="form-label">Description</label>
+                <!-- Replace rich text editor with standard textarea -->
                 <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="mb-3 col-md-6">
                 <label asp-for="Features" class="form-label">Features</label>
+                <!-- Replace rich text editor with standard textarea -->
                 <textarea asp-for="Features" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="Features" class="text-danger"></span>
             </div>
         </div>
         <div class="mb-3">
-            <label for="ImageUpload" class="form-label">Shoe Image</label>
+            <label for="ImageUpload" class="form-label">Airplane Image</label>
             <input type="file" class="form-control" id="ImageUpload" name="ImageUpload">
         </div>
         <div class="col-12 col-md-6 mb-3">
