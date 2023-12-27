@@ -428,4 +428,52 @@ public class OrderController : Controller
         }
     }
 
+    [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Employee}")]
+    public async Task<IActionResult> GenerateAllOrdersReport()
+    {
+        var allOrders = await _unitOfWork.Orders
+            .GetAllAsync(include: o => o.Include(e => e.ApplicationUser));
+
+        using (MemoryStream memoryStream = new MemoryStream())
+        {
+            Document document = new Document(PageSize.A4, 10, 10, 10, 10);
+            PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
+            document.Open();
+
+            PdfPTable table = new PdfPTable(6); // 6 columns
+            PdfPCell cell = new PdfPCell(new Phrase("All Orders Report"))
+            {
+                Colspan = 6,
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                Padding = 10,
+                BackgroundColor = new BaseColor(140, 221, 8)
+            };
+
+            table.AddCell(cell);
+            table.AddCell("OrderId");
+            table.AddCell("Customer Name");
+            table.AddCell("Phone Number");
+            table.AddCell("Email");
+            table.AddCell("Status");
+            table.AddCell("Total");
+
+            foreach (var order in allOrders)
+            {
+                table.AddCell(order.Id.ToString());
+                table.AddCell(order.Name);
+                table.AddCell(order.PhoneNumber);
+                table.AddCell(order.ApplicationUser?.Email ?? "N/A");
+                table.AddCell(order.OrderStatus);
+                table.AddCell(order.OrderTotal.ToString("C"));
+            }
+
+            document.Add(table);
+            document.Close();
+
+            byte[] bytes = memoryStream.ToArray();
+            memoryStream.Close();
+            return File(bytes, "application/pdf", "All_Orders_Report.pdf");
+        }
+    }
+
 }
