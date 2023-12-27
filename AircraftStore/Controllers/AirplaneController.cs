@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Aircraft.DataAccess.Repository.IRepository;
 using Aircraft.Models;
 using Aircraft.Ultitity;
+using System.Text;
 
 namespace Aircraft.Controllers
 {
@@ -155,6 +156,21 @@ namespace Aircraft.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> GenerateReport()
+        {
+            var airplanes = await _unitOfWork.Airplanes.GetAllAsync(include: e => e.Include(a => a.Brand));
+
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("AirplaneId, AirplaneName, CreatedDate, BrandName");
+
+            foreach (var airplane in airplanes)
+            {
+                stringBuilder.AppendLine($"{airplane.Id}, {airplane.Name}, {airplane.Created.ToString("yyyy-MM-dd")}, {airplane.Brand.Name}");
+            }
+
+            return File(Encoding.UTF8.GetBytes(stringBuilder.ToString()), "text/csv", "Airplanes_Report.csv");
         }
     }
 }
