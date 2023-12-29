@@ -167,10 +167,18 @@ namespace Aircraft.Controllers
 
             foreach (var airplane in airplanes)
             {
-                stringBuilder.AppendLine($"{airplane.Id}, {airplane.Name}, {airplane.Created.ToString("yyyy-MM-dd")}, {airplane.Brand.Name}");
+                // Ensure that the text fields are enclosed in quotes and quotes in values are escaped
+                var airplaneName = "\"" + airplane.Name.Replace("\"", "\"\"") + "\"";
+                var brandName = airplane.Brand != null ? "\"" + airplane.Brand.Name.Replace("\"", "\"\"") + "\"" : "";
+
+                // Format the date
+                var createdDate = airplane.Created.ToString("yyyy-MM-dd");
+
+                stringBuilder.AppendLine($"{airplane.Id}, {airplaneName}, {createdDate}, {brandName}");
             }
 
             return File(Encoding.UTF8.GetBytes(stringBuilder.ToString()), "text/csv", "Airplanes_Report.csv");
         }
+
     }
 }

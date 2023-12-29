@@ -6,7 +6,7 @@ using Aircraft.DataAccess.Repository.IRepository;
 using Aircraft.Models;
 using Aircraft.Models.ViewModels;
 using Aircraft.Ultitity;
-using Stripe.Checkout;
+/*using Stripe.Checkout;*/
 
 namespace Aircraft.Controllers;
 
@@ -391,76 +391,19 @@ public class CartController : Controller
                         OrderId = cartViewModel.ShopOrder.Id
                     };
                     await _unitOfWork.OrderDetails.AddAsync(orderDetail);
-                    await _unitOfWork.SaveChangesAsync();
                 }
 
-                // commit Transaction
+                await _unitOfWork.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                // TempData[SD.Error] = e.Message;
-                TempData[SD.Error] = "Somethings wrong happen.\nCheckout Failed!";
+                TempData[SD.Error] = "Something went wrong. Checkout Failed!";
                 return RedirectToAction("Index", "Home");
             }
 
-            // stripe settings
-            var domain = $"{Request.Scheme}://{Request.Host.Value}";
-            var options = new SessionCreateOptions
-            {
-                PaymentIntentData = new SessionPaymentIntentDataOptions
-                {
-                    SetupFutureUsage = "off_session"
-                },
-               /* SuccessUrl = $"{domain}/Cart/OrderConfirmation?id={cartViewModel.ShopOrder.Id}",
-                CancelUrl = $"{domain}/Cart/OrderConfirmation?id={cartViewModel.ShopOrder.Id}",*/
-                SuccessUrl = $"{domain}/Cart/OrderConfirmation?id={cartViewModel.ShopOrder.Id}",
-                CancelUrl = $"{domain}/Cart/OrderConfirmation?id={cartViewModel.ShopOrder.Id}",
-                // CancelUrl = $"{domain}/Cart/Index",
-                LineItems = new List<SessionLineItemOptions>(),
-                Mode = "payment",
-                PaymentMethodTypes = new List<string>()
-                {
-                    "card",
-                },
-            };
-
-            foreach (var cartItem in cartItemList)
-            {
-                AirplaneColor airplaneColor = (await _unitOfWork.AirplaneColors.FirstOrDefaultAsync(
-                    e => e.AirplaneSizes!.Any(ss => ss.Id == cartItem.AirplaneSizeId),
-                    include: o => o.Include(e => e.Airplane)
-                        .Include(e => e.Images)
-                        .Include(e => e.Color)!
-                ))!;
-
-                var sessionLineItem = new SessionLineItemOptions
-                {
-                    PriceData = new SessionLineItemPriceDataOptions
-                    {
-                        UnitAmount = (long)(cartItem.PriceEach * 100),
-                        Currency = "usd",
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
-                        {
-                            Name = $"{airplaneColor.Airplane!.Name} {airplaneColor.Color?.Name}",
-                            Images = airplaneColor.Images?.Select(e => $"{domain}{e.Path}").ToList() ?? new List<string>(),
-                        },
-                    },
-                    Quantity = cartItem.Count,
-                };
-
-                options.LineItems.Add(sessionLineItem);
-            }
-
-            var service = new SessionService();
-            Session session = service.Create(options);
-
-            await _unitOfWork.Orders.UpdateStripePaymentId(cartViewModel.ShopOrder.Id, session.Id,
-                session.PaymentIntentId);
-            await _unitOfWork.SaveChangesAsync();
-
-            // clear Cart
+            // Clear Cart after successful transaction
             if (applicationUserId != null)
             {
                 _unitOfWork.CartItems.RemoveRange(cartItemList);
@@ -471,11 +414,12 @@ public class CartController : Controller
                 Cart.Clear();
             }
 
-            Response.Headers.Add("Location", session.Url);
-            return new StatusCodeResult(303);
+            // Redirect to confirmation page or similar
+            // Adjust this based on your application's flow
+            return RedirectToAction("OrderConfirmation", new { id = cartViewModel.ShopOrder.Id });
         }
 
-        TempData[SD.Error] = "Please enter all field!";
+        TempData[SD.Error] = "Please enter all fields!";
         return View(cartViewModel);
     }
 
@@ -483,16 +427,17 @@ public class CartController : Controller
     {
         ShopOrder? order = await _unitOfWork.Orders.FirstOrDefaultAsync(e => e.Id == id);
 
-        if (order.PaymentStatus != SD.PaymentStatusDelayedPayment)
+        // Assuming that you will handle the payment confirmation in your own way
+        // Here, you might update the order status based on your internal logic
+        // This replaces the Stripe payment confirmation logic
+
+        // Example: Directly updating the order status to approved
+        // You should replace this with your actual payment confirmation logic
+        if (order != null && order.PaymentStatus != SD.PaymentStatusDelayedPayment)
         {
-            var service = new SessionService();
-            Session session = service.Get(order.SessionId);
-            // check the stripe status
-            if (session.PaymentStatus.ToLower() == "paid")
-            {
-                await _unitOfWork.Orders.UpdateStatusAsync(id, SD.StatusApproved, SD.PaymentStatusApproved);
-                await _unitOfWork.SaveChangesAsync();
-            }
+            // Update the order status to approved or similar, based on your application logic
+            await _unitOfWork.Orders.UpdateStatusAsync(id, SD.StatusApproved, SD.PaymentStatusApproved);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         return View(id);

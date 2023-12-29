@@ -74,7 +74,7 @@
     @*-- Color Variant --*@
 
     <div class="color-variant">
-        <h3 class="title-option mb-4 mt-5">Color Variants List</h3>
+        <h3 class="title-option mb-4 mt-5">Color and Price Variants List</h3>
         <div class="d-flex justify-content-start align-items-center flex-wrap gap-4">
             @foreach (var e in Model?.AirplaneColors ?? Enumerable.Empty<AirplaneColor>())
             {
@@ -97,7 +97,7 @@
         </div>
         <div class="d-flex justify-content-center align-items-center gap-3 mt-4 mb-4">
             <a class="btn-save" asp-controller="AirplaneColors" asp-action="Create" asp-route-airplaneId="@Model.Id">
-                Add Color
+                Add
             </a>
         </div>
     </div>
