@@ -231,10 +231,10 @@ public class OrderController : Controller
             orderFromDb.Name = orderViewModel.Order.Name;
             orderFromDb.PhoneNumber = orderViewModel.Order.PhoneNumber;
             orderFromDb.Address = orderViewModel.Order.Address;
-            orderFromDb.City = orderViewModel.Order.City;
-            orderFromDb.District = orderViewModel.Order.District;
-            orderFromDb.Ward = orderViewModel.Order.Ward;
-            orderFromDb.PostalCode = orderViewModel.Order.PostalCode;
+            orderFromDb.City = orderViewModel.Order.City ?? orderFromDb.City; // Fallback to existing city if null
+            orderFromDb.District = orderViewModel.Order.District ?? orderFromDb.District;
+            orderFromDb.Ward = orderViewModel.Order.Ward ?? orderFromDb.Ward;
+            orderFromDb.PostalCode = orderViewModel.Order.PostalCode ?? orderFromDb.PostalCode;
 
             if (orderViewModel.Order.Carrier != null)
             {
